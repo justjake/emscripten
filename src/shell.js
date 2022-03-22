@@ -184,6 +184,7 @@ function logExceptionOnExit(e) {
 #if ENVIRONMENT_MAY_BE_NODE
 var fs;
 var nodePath;
+var nodeURL;
 var requireNodeFS;
 
 if (ENVIRONMENT_IS_NODE) {

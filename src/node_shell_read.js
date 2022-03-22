@@ -11,6 +11,7 @@ requireNodeFS = () => {
   if (!nodePath) {
     fs = require('fs');
     nodePath = require('path');
+    nodeURL = require('url')
   }
 };
 
@@ -22,7 +23,11 @@ read_ = function shell_read(filename, binary) {
   }
 #endif
   requireNodeFS();
-  filename = nodePath['normalize'](filename);
+  if (isFileURI(filename)) {
+    filename = nodeURL['fileURLtoPath'](filename);
+  } else {
+    filename = nodePath['normalize'](filename);
+  }
   return fs.readFileSync(filename, binary ? undefined : 'utf8');
 };
 
@@ -45,7 +50,11 @@ readAsync = (filename, onload, onerror) => {
   }
 #endif
   requireNodeFS();
-  filename = nodePath['normalize'](filename);
+  if (isFileURI(filename)) {
+    filename = nodeURL['fileURLtoPath'](filename);
+  } else {
+    filename = nodePath['normalize'](filename);
+  }
   fs.readFile(filename, function(err, data) {
     if (err) onerror(err);
     else onload(data.buffer);
