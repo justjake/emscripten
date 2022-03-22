@@ -48,6 +48,7 @@ emmake = shared.bat_suffix(path_from_root('emmake'))
 emconfig = shared.bat_suffix(path_from_root('em-config'))
 emsize = shared.bat_suffix(path_from_root('emsize'))
 emprofile = shared.bat_suffix(path_from_root('emprofile'))
+emsymbolizer = shared.bat_suffix(path_from_root('emsymbolizer'))
 wasm_opt = Path(building.get_binaryen_bin(), 'wasm-opt')
 
 
@@ -8378,8 +8379,7 @@ int main() {
     # instructions or code sequences.
 
     def get_addr(address):
-      return self.run_process(
-          [PYTHON, path_from_root('emsymbolizer.py'), 'test_dwarf.wasm', address],
+      return self.run_process([emsymbolizer, 'test_dwarf.wasm', address],
           stdout=PIPE).stdout
 
     # Check a location in foo(), not inlined.
