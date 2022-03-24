@@ -24,7 +24,9 @@ read_ = function shell_read(filename, binary) {
 #endif
   requireNodeFS();
   if (isFileURI(filename)) {
-    filename = nodeURL['fileURLtoPath'](filename);
+    // For ES6 modules.
+    // This will normalize the path, too.
+    filename = nodeURL['fileURLToPath'](filename);
   } else {
     filename = nodePath['normalize'](filename);
   }
@@ -51,7 +53,7 @@ readAsync = (filename, onload, onerror) => {
 #endif
   requireNodeFS();
   if (isFileURI(filename)) {
-    filename = nodeURL['fileURLtoPath'](filename);
+    filename = nodeURL['fileURLToPath'](filename);
   } else {
     filename = nodePath['normalize'](filename);
   }
