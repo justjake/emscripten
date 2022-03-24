@@ -95,10 +95,20 @@ WasmSourceMap.prototype.normalizeOffset = function (offset) {
   return this.offsets[lo - 1];
 }
 
-var wasmSourceMapFile = '{{{ WASM_BINARY_FILE }}}.map';
-if (!isDataURI(wasmBinaryFile)) {
-  wasmSourceMapFile = locateFile(wasmSourceMapFile);
+var wasmSourceMapFile;
+#if EXPORT_ES6 && USE_ES6_IMPORT_META && !SINGLE_FILE
+if (Module['locateFile']) {
+#endif
+  wasmSourceMapFile = '{{{ WASM_BINARY_FILE }}}.map';
+  if (!isDataURI(wasmBinaryFile)) {
+    wasmSourceMapFile = locateFile(wasmSourceMapFile);
+  }
+#if EXPORT_ES6 && USE_ES6_IMPORT_META && !SINGLE_FILE // in single-file mode, repeating WASM_BINARY_FILE would emit the contents again
+} else {
+  // Use bundler-friendly `new URL(..., import.meta.url)` pattern; works in browsers too.
+  wasmSourceMapFile = new URL('{{{ WASM_BINARY_FILE }}}.map', import.meta.url).toString();
 }
+#endif
 
 function getSourceMap() {
   try {
