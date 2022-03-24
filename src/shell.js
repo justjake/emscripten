@@ -195,7 +195,8 @@ if (ENVIRONMENT_IS_NODE) {
 #endif
   if (ENVIRONMENT_IS_WORKER) {
     scriptDirectory = require('path').dirname(scriptDirectory) + '/';
-  } else {
+  } else if (typeof __dirname === 'string') {
+    // __dirname is undefined for ES6 modules
     scriptDirectory = __dirname + '/';
   }
 
